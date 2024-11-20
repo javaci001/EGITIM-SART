@@ -1,0 +1,21 @@
+CODE SHARE
+    https://codeshare.io/
+    https://codeshare.io/codes
+    baypro... yahoo As...02!
+
+LINUX KLAVYE
+    setxkbmap tr
+
+SUDO PASSWD
+    ubuntu da su root yapınca hata alırsın. 
+    sudo passwd --> bununla yeni password belirlemelisin. 
+
+
+GITHUB ve GIT islemleri
+    https://github.com/login
+    javaci001 muratmetin@gmail.com A..01!
+
+    apt-get install git --> ubuntuya git yüklenir
+
+    
+
