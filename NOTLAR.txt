@@ -34,7 +34,46 @@ GITHUB ve GIT islemleri
 
 
 UBUNTU FIREWALL islemleri  
-    
+    sudo apt-get update
+    sudo apt-get install openssh-server
+    sudo apt install ufw
+    sudo ufw allow 22
+    sudo ufw status
+    sudo ufw disable
+    sudo ufw status
+    sudo apt install gufw
+    sudo systemctl restart NetworkManager
+    sudo apt update
+    sudo apt install open-vm-tools-desktop
+    sudo apt install open-vm-tools
+
     sudo shutdown -r now 
+
+JAVA YUKLEME
+    java -version 
+    which java 
+    sudo apt update
+    sudo apt install default-jre
+    sudo apt install default-jdk   --> jar vs. komutlarını içerir
+
+SORUNLARN GIDERILMESI
+    docker kısmında x509 certificate gibi hatalar alabilirsin. 
+    bunun için aşağıdakileri yüklemelisin
+
+        sudo apt update
+        sudo apt install ca-certificates
+        sudo update-ca-certificates
+        sudo systemctl daemon-reload
+        sudo systemctl restart docker
+        sudo systemctl status docker
+        docker pull hello-world
+
+
+IVIR ZIVIR YUKLEME
+    sudo apt list
+    sudo apt install python 
+    sudo apt install net-tools 
+    sudo apt install iputils-ping
+    ifconfig
 
 
