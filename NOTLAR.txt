@@ -1,31 +1,45 @@
+********************************************************************************************************
 CODE SHARE
-    https://codeshare.io/
-    https://codeshare.io/codes
-    baypro... yahoo As...02!
+********************************************************************************************************
+https://codeshare.io/
+https://codeshare.io/codes
+baypro... yahoo As...02!
 
+
+
+********************************************************************************************************
 VISUAL STUDIO CODE
-    code .
+********************************************************************************************************
+code .
 
 
+********************************************************************************************************
 LINUX KLAVYE
-    setxkbmap tr
+********************************************************************************************************
+setxkbmap tr
 
+
+********************************************************************************************************
 SUDO PASSWD
-    ubuntu da su root yapınca hata alırsın. 
-    sudo passwd --> bununla yeni password belirlemelisin. 
+********************************************************************************************************
+ubuntu da su root yapınca hata alırsın. 
+sudo passwd --> bununla yeni password belirlemelisin. 
 
 
+
+********************************************************************************************************
 GITHUB ve GIT islemleri
-    https://github.com/login
-    javaci001 muratmetin@gmail.com A..01!
+********************************************************************************************************
+https://github.com/login
+javaci001 muratmetin@gmail.com A..01!
 
-    apt-get install git --> ubuntuya git yüklenir
+apt-get install git --> ubuntuya git yüklenir
 
-    windows' a git yüklemek için:
-        https://git-scm.com/downloads/win
-        bunu windows için yükledikten sonra vscode aç kapa. 
-        vscode ta source diye sol menüde seçenek var. ona basarsan git için hazır bulursun. 
-        ayrıca vscode den terminal den de git diyerek mesela git version, git init vs. yapabilirsin. 
+windows' a git yüklemek için:
+   https://git-scm.com/downloads/win
+   bunu windows için yükledikten sonra vscode aç kapa. 
+   vscode ta source diye sol menüde seçenek var. ona basarsan git için hazır bulursun. 
+   ayrıca vscode den terminal den de git diyerek mesela git version, git init vs. yapabilirsin. 
 
 
     GIT TOKEN OLUŞTURMA
@@ -33,47 +47,106 @@ GITHUB ve GIT islemleri
         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
 
 
-UBUNTU FIREWALL islemleri  
-    sudo apt-get update
-    sudo apt-get install openssh-server
-    sudo apt install ufw
-    sudo ufw allow 22
-    sudo ufw status
-    sudo ufw disable
-    sudo ufw status
-    sudo apt install gufw
-    sudo systemctl restart NetworkManager
-    sudo apt update
-    sudo apt install open-vm-tools-desktop
-    sudo apt install open-vm-tools
 
-    sudo shutdown -r now 
+********************************************************************************************************
+UBUNTU FIREWALL & VMWARE TOOLS yükleme islemleri  
+********************************************************************************************************
+sudo apt-get update
+sudo apt-get install openssh-server
+sudo apt install ufw
+sudo ufw allow 22
+sudo ufw status
+sudo ufw disable
+sudo ufw status
+sudo apt install gufw
+gufw  ile uygulama üzerinden görebilirsin. 
 
+sudo systemctl restart NetworkManager
+sudo apt update
+sudo apt install open-vm-tools-desktop
+sudo apt install open-vm-tools
+
+sudo shutdown -r now 
+
+
+
+********************************************************************************************************
 JAVA YUKLEME
-    java -version 
-    which java 
-    sudo apt update
-    sudo apt install default-jre
-    sudo apt install default-jdk   --> jar vs. komutlarını içerir
+********************************************************************************************************
+java -version 
+which java 
+sudo apt update
+sudo apt install default-jre
+sudo apt install default-jdk   --> jar vs. komutlarını içerir
 
+
+
+********************************************************************************************************
 SORUNLARN GIDERILMESI
-    docker kısmında x509 certificate gibi hatalar alabilirsin. 
-    bunun için aşağıdakileri yüklemelisin
+********************************************************************************************************
+docker kısmında x509 certificate gibi hatalar alabilirsin. 
+bunun için aşağıdakileri yüklemelisin
 
-        sudo apt update
-        sudo apt install ca-certificates
-        sudo update-ca-certificates
-        sudo systemctl daemon-reload
-        sudo systemctl restart docker
-        sudo systemctl status docker
-        docker pull hello-world
+sudo apt update
+sudo apt install ca-certificates
+sudo update-ca-certificates
+sudo systemctl daemon-reload
+sudo systemctl restart docker
+sudo systemctl status docker
+docker pull hello-world
 
 
+
+********************************************************************************************************
 IVIR ZIVIR YUKLEME
-    sudo apt list
-    sudo apt install python 
-    sudo apt install net-tools 
-    sudo apt install iputils-ping
-    ifconfig
+********************************************************************************************************
+sudo apt list
+sudo apt install python 
+sudo apt install net-tools 
+sudo apt install iputils-ping
+sudo apt install vim
+sudo apt install curl
+sudo apt install wget
+ifconfig
 
 
+
+********************************************************************************************************
+DOCKER YUKLEME
+********************************************************************************************************
+docker
+sudo su
+sudo apt update
+sudo apt-get install apt-transport-https ca-certificates
+apt install curl
+curl gnupg-agent software-proqperties-common    --> sorun verebilir. Aldırış etmeden ilerle
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo apt-key fingerprint 0EBFCD88
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"Y GY T4
+Sorun verirse : sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+sudo apt install docker-ce docker-ce-cli containerd.io
+
+sudo groupadd docker
+sudo usermod -aG docker ubuntum
+docker version
+sudo shutdown –r now
+
+
+
+********************************************************************************************************
+DOCKER COMPOSE YÜKLEME
+********************************************************************************************************
+sudo apt-get install docker-compose
+Çok önemli: docker-compose yeni versiyon ile upgrade etmeliyiz:  https://hakanu.net/docker/2021/09/19/resolving-invalid-docker-compose-yaml-error-during-using-airflow-with-docker/
+sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/bin/docker-compose
+
+
+
+
+********************************************************************************************************
+DOCKER MACHINE YÜKLEME
+********************************************************************************************************
+sudo apt-get install virtualbox
+sudo su
+base=https://github.com/docker/machine/releases/download/v0.16.0 && curl -L $base/docker-machine-$(uname -s)-$(uname -m) >/usr/local/bin/docker-machine && chmod +x /usr/local/bin/docker-machine
+docker-machine version
