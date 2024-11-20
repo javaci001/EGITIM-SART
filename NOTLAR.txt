@@ -33,4 +33,8 @@ GITHUB ve GIT islemleri
         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
 
 
+UBUNTU FIREWALL islemleri  
+    
+    sudo shutdown -r now 
+
 
