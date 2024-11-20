@@ -3,6 +3,10 @@ CODE SHARE
     https://codeshare.io/codes
     baypro... yahoo As...02!
 
+VISUAL STUDIO CODE
+    code .
+
+
 LINUX KLAVYE
     setxkbmap tr
 
@@ -17,5 +21,16 @@ GITHUB ve GIT islemleri
 
     apt-get install git --> ubuntuya git yüklenir
 
-    
+    windows' a git yüklemek için:
+        https://git-scm.com/downloads/win
+        bunu windows için yükledikten sonra vscode aç kapa. 
+        vscode ta source diye sol menüde seçenek var. ona basarsan git için hazır bulursun. 
+        ayrıca vscode den terminal den de git diyerek mesela git version, git init vs. yapabilirsin. 
+
+
+    GIT TOKEN OLUŞTURMA
+        ayarlar --> developer settings --> personel access tokens --> token(classic)
+        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
+
+
 
