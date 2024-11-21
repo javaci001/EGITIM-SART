@@ -1,45 +1,8 @@
 version: "2.1"
 services:
 
-#PROJE 1: datauret ve stream işlemleri için kullanılan kısımlar ve servisler. real time perakende ve bankacilik uygulaması için. 
-
-  mysql:
-    image: mysql
-    container_name: mysql
-    hostname: mysql
-    ports: 
-      - "3306:3306"
-      - "33060:33060"
-    volumes:
-      - db_data:/var/lib/mysql
-    restart: always
-    networks:
-      - csp-ce-net
-    environment:
-      MYSQL_ROOT_PASSWORD: mmetin
-      MYSQL_DATABASE: mmetin
-      MYSQL_USER: mmetin
-      MYSQL_PASSWORD: mmetin
-
-  zeppelin:
-    image: bde2020/zeppelin
-    container_name: zeppelin
-    hostname: zeppelin
-    env_file:
-      - ./hadoop-hive.env
-    ports:
-      - 80:8080
-    volumes:
-      - ./notebook:/opt/zeppelin/notebook
-    networks:
-      - csp-ce-net
-    environment:
-      CORE_CONF_fs_defaultFS: "hdfs://namenode:8020"
-    depends_on:
-      - "namenode"
-
   namenode:
-    image: bde2020/hadoop-namenode:2.0.0-hadoop2.7.4-java8
+    image: bde2020/hadoop-namenode
     container_name: namenode
     hostname: namenode
     volumes:
@@ -56,7 +19,7 @@ services:
 
 
   datanode1:
-    image: bde2020/hadoop-datanode:2.0.0-hadoop2.7.4-java8
+    image: bde2020/hadoop-datanode
     container_name: datanode1
     hostname: datanode1
     volumes:
@@ -73,7 +36,7 @@ services:
       - "50075:50075"
 
   datanode2:
-    image: bde2020/hadoop-datanode:2.0.0-hadoop2.7.4-java8
+    image: bde2020/hadoop-datanode
     container_name: datanode2
     hostname: datanode2
     volumes:
@@ -90,7 +53,7 @@ services:
       - "50076:50075"
 
   datanode3:
-    image: bde2020/hadoop-datanode:2.0.0-hadoop2.7.4-java8
+    image: bde2020/hadoop-datanode
     container_name: datanode3
     hostname: datanode3
     volumes:
@@ -107,97 +70,14 @@ services:
       - "50077:50075"
 
 
-  hive-server:
-    image: bde2020/hive:2.3.2-postgresql-metastore
-    container_name: hive-server
-    hostname: hive-server
-    env_file:
-      - ./hadoop-hive.env
-    depends_on:
-      - hive-metastore
-    networks:
-      - csp-ce-net
-    environment:
-      HIVE_CORE_CONF_javax_jdo_option_ConnectionURL: "jdbc:postgresql://hive-metastore/metastore"
-      SERVICE_PRECONDITION: "hive-metastore:9083"
-    ports:
-      - "10000:10000"
-
-
-  hive-metastore:
-    image: bde2020/hive:2.3.2-postgresql-metastore
-    container_name: hive-metastore
-    hostname: hive-metastore
-    env_file:
-      - ./hadoop-hive.env
-    command: /opt/hive/bin/hive --service metastore
-    networks:
-      - csp-ce-net
-    environment:
-      SERVICE_PRECONDITION: "namenode:50070 datanode:50075 hive-metastore-postgresql:5432"
-    depends_on:
-      - hive-metastore-postgresql
-    ports:
-      - "9083:9083"
-
-  hive-metastore-postgresql:
-    image: bde2020/hive-metastore-postgresql:2.3.0
-    container_name: hive-metastore-postgresql
-    hostname: hive-metastore-postgresql
-    networks:
-      - csp-ce-net
-    volumes:
-      - ./metastore-postgresql/postgresql/data:/var/lib/postgresql/data
-    depends_on:
-      - datanode1
-      - datanode2
-      - datanode3
-
-  spark-master:
-    image: bde2020/spark-master:2.4.0-hadoop2.7
-    container_name: spark-master
-    hostname: spark-master
-    ports:
-      - "8082:8082"
-      - "7077:7077"
-    environment:
-      - INIT_DAEMON_STEP=setup_spark
-    networks:
-      - csp-ce-net
-  spark-worker-1:
-    image: bde2020/spark-worker:2.4.0-hadoop2.7
-    hostname: spark-worker-1
-    container_name: spark-worker-1
-    depends_on:
-      - spark-master
-    ports:
-      - "8084:8084"
-    environment:
-      - "SPARK_MASTER=spark://spark-master:7077"
-    networks:
-      - csp-ce-net
 
 networks:
   csp-ce-net:
     driver: bridge
 
 volumes:
-  ssb-volume:
-  flink-volume:
-  pg-volume:
-  zk-volume:
-  kf-volume:
-  kfc-volume:
-  prom-volume:
-  sr-volume:
   db_data: {}
   namenode: {}
   datanode1: {}
   datanode2: {}
   datanode3: {}
-  nifi-conf: {}
-  elastic_data: {}
-  elastic_data_node1: {}
-  cassandra1: {}
-  cassandra2: {}
-  cassandra3: {}
