@@ -46,6 +46,12 @@ windows' a git yüklemek için:
         ayarlar --> developer settings --> personel access tokens --> token(classic)
         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
 
+    GIT ILK CONFIG ISLEMLERI 
+        git --version
+        git config --global user.name "javaci001"
+        git config --global user.email "muratmetin@gmail.com"
+        git config credential.username "javaci001"
+        git config --list
 
 
 ********************************************************************************************************
@@ -152,3 +158,4 @@ base=https://github.com/docker/machine/releases/download/v0.16.0 && curl -L $bas
 docker-machine version
 
 bugün 21 kasım
+
