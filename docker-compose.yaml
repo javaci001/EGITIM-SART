@@ -70,7 +70,6 @@ services:
       - "50077:50075"
 
 
-
 networks:
   csp-ce-net:
     driver: bridge
