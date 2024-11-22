@@ -159,10 +159,63 @@ services:
         hard: 65536         
 
 
+  hive-server:
+    image: bde2020/hive:2.3.2-postgresql-metastore
+    container_name: hive-server
+    hostname: hive-server
+    env_file:
+      - ./hadoop.env
+    depends_on:
+      - hive-metastore
+    environment:
+      HIVE_CORE_CONF_javax_jdo_option_ConnectionURL: "jdbc:postgresql://hive-metastore/metastore"
+      SERVICE_PRECONDITION: "hive-metastore:9083"
+    ports:
+      - "10000:10000"
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536       
+
+
+  hive-metastore:
+    image: bde2020/hive:2.3.2-postgresql-metastore
+    container_name: hive-metastore
+    hostname: hive-metastore
+    env_file:
+      - ./hadoop.env
+    command: /opt/hive/bin/hive --service metastore
+    environment:
+      SERVICE_PRECONDITION: "namenode:9870 datanode1:9866 hive-metastore-postgresql:5432"
+    depends_on:
+      - hive-metastore-postgresql
+    ports:
+      - "9083:9083"
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536          
+
+
+  hive-metastore-postgresql:
+    image: bde2020/hive-metastore-postgresql:2.3.0
+    container_name: hive-metastore-postgresql
+    hostname: hive-metastore-postgresql
+    volumes:
+      - hive-metastore-postgresql:/var/lib/postgresql/data
+    depends_on:
+      - datanode1
+      - datanode2
+      - datanode3
+
+
+
+
 volumes:
   datanode1:
   datanode2:
   datanode3:
   namenode:
   hadoop_historyserver:
+  hive-metastore-postgresql:
 
