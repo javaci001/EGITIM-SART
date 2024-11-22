@@ -12,15 +12,157 @@ services:
     env_file:
       - ./hadoop.env
     ports:
-      - "50070:50070"
-      - "8020:8020"
+      - "9870:9870"
+      - "9820:9820"
     ulimits:
       nofile:
         soft: 65536
         hard: 65536
 
+  datanode1:
+    image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
+    container_name: datanode1
+    hostname: datanode1
+    volumes:
+      - datanode1:/hadoop/dfs/data
+    depends_on:
+      - namenode
+    env_file:
+      - ./hadoop.env
+    environment:
+      SERVICE_PRECONDITION: "namenode:9870"
+    ports:
+      - "9864:9864"
+      - "9866:9866"
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536      
+
+  datanode2:
+    image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
+    container_name: datanode2
+    hostname: datanode2
+    volumes:
+      - datanode2:/hadoop/dfs/data
+    depends_on:
+      - namenode
+    env_file:
+      - ./hadoop.env
+    environment:
+      SERVICE_PRECONDITION: "namenode:9870"
+    ports:
+      - "9865:9864"
+      - "9867:9866"
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536    
+
+
+  datanode3:
+    image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
+    container_name: datanode3
+    hostname: datanode3
+    volumes:
+      - datanode3:/hadoop/dfs/data
+    depends_on:
+      - namenode
+    env_file:
+      - ./hadoop.env
+    environment:
+      SERVICE_PRECONDITION: "namenode:9870"
+    ports:
+      - "9869:9864"
+      - "9871:9866"
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536    
+
+
+  resourcemanager:
+    image: bde2020/hadoop-resourcemanager:2.0.0-hadoop3.2.1-java8
+    container_name: resourcemanager
+    hostname: resourcemanager
+    environment:
+      SERVICE_PRECONDITION: "namenode:9870 datanode1:9866 datanode2:9866 datanode3:9866"
+    env_file:
+      - ./hadoop.env
+    depends_on:
+      - namenode
+      - datanode1
+      - datanode2
+      - datanode3      
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    ports:
+      - "8032:8032"
+      - "8033:8033"   
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536              
+ 
+
+  nodemanager:
+    image: bde2020/hadoop-nodemanager:2.0.0-hadoop3.2.1-java8
+    container_name: nodemanager
+    hostname: nodemanager
+    environment:
+      SERVICE_PRECONDITION: "namenode:9870 datanode1:9866 datanode2:9866 datanode3:9866 resourcemanager:8032"
+    env_file:
+      - ./hadoop.env
+    depends_on:
+      - namenode
+      - datanode1
+      - datanode2
+      - datanode3  
+      - resourcemanager
+    deploy:
+      mode: global
+      restart_policy:
+        condition: on-failure
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536           
+
+
+  historyserver:
+    image: bde2020/hadoop-historyserver:2.0.0-hadoop3.2.1-java8
+    container_name: historyserver
+    hostname: historyserver
+    volumes:
+      - hadoop_historyserver:/hadoop/yarn/timeline
+    ports:
+      - "10033:10033"
+    environment:
+      SERVICE_PRECONDITION: "namenode:9870 datanode1:9866 datanode2:9866 datanode3:9866 resourcemanager:8032"
+    env_file:
+      - ./hadoop.env
+    deploy:
+      mode: replicated
+      replicas: 1
+    depends_on:
+      - namenode
+      - datanode1
+      - datanode2
+      - datanode3 
+      - resourcemanager
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536         
+
+
 volumes:
-  datanode:
+  datanode1:
+  datanode2:
+  datanode3:
   namenode:
   hadoop_historyserver:
 
