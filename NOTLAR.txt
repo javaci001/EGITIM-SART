@@ -3,15 +3,28 @@ CODE SHARE
 ********************************************************************************************************
 https://codeshare.io/
 https://codeshare.io/codes
-baypro... yahoo As...02!
+baypro... yaho As...02!
 
 
 
 ********************************************************************************************************
 VISUAL STUDIO CODE
 ********************************************************************************************************
+sudo apt-get update
+curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
+sudo mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg
+sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
+sudo apt update
+sudo apt install code --classic
+sudo apt-get update
+sudo apt install build-essential libcurl4-gnutls-dev libxml2-dev libssl-dev
+
 code .
 
+extension olarak:
+    git graph 
+    git history
+    git & github extension pack  --> aslında bunda hepsi var. 9 paket
 
 ********************************************************************************************************
 LINUX KLAVYE
