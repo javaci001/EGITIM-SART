@@ -189,3 +189,21 @@ source ./venv/bin/activate
 python3 -m pip install pyspark
 
 
+********************************************************************************************************
+NGROK YUKLEME ve SIGN IN OLMA
+********************************************************************************************************
+https://dashboard.ngrok.com/login
+javaci001 muratmetin@gmail.com github account ile login olmaktasın
+Install your authtoken: https://dashboard.ngrok.com/get-started/your-authtoken
+
+
+sudo wget https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-amd64.tgz
+sudo tar xvzf ./ngrok-v3-stable-linux-amd64.tgz -C /usr/local/bin
+
+ngrok config add-authtoken 2pNhlp1C7E3Dxq6O0Gehu4F6iQu_84y8CAHnh9XPakX1JoUDv
+ngrok http http://localhost:8081
+
+github ekranı --> repository --> settgins --> webhooks --> payload url -->
+payload url --> https://f1de-88-226-104-4.ngrok-free.app/github-webhook/
+önemli: sonuna /github-webhook/  eklemeyi unutma
+
