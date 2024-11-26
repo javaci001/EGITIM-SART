@@ -57,8 +57,7 @@ windows' a git yüklemek için:
 
     GIT TOKEN OLUŞTURMA
         ayarlar --> developer settings --> personel access tokens --> token(classic)
-        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
-        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
+        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
 
     GIT ILK CONFIG ISLEMLERI 
         git --version
@@ -208,6 +207,4 @@ github ekranı --> repository --> settgins --> webhooks --> payload url -->
 payload url --> https://f1de-88-226-104-4.ngrok-free.app/github-webhook/
 önemli: sonuna /github-webhook/  eklemeyi unutma
 
-dene
-dene2
-dene3
+denesene
