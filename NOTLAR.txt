@@ -57,9 +57,9 @@ windows' a git yüklemek için:
 
     GIT TOKEN OLUŞTURMA
         ayarlar --> developer settings --> personel access tokens --> token(classic)
-        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
+        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
 
-        denesene
+
 
     GIT ILK CONFIG ISLEMLERI 
         git --version
