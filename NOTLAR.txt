@@ -237,4 +237,8 @@ github ekranı --> repository --> settgins --> webhooks --> payload url -->
 payload url --> https://f1de-88-226-104-4.ngrok-free.app/github-webhook/
 önemli: sonuna /github-webhook/  eklemeyi unutma
 
-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
+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
+
+https://github.com/javaci001/EGITIM-SART.git
+
+git remote set-url origin https://javaci001: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@github.com/javaci001/EGITIM-SART.git
