@@ -12,21 +12,21 @@ pipeline {
             }
         }   
 
-        stage('Log date 2') {
+        stage('hostname yaz') {
             steps {
                 sh 'hostname -f'
             }
         }   
 
-        stage('Checkout') {
+        stage('git clone yap') {
             steps {
                 git branch: 'main', url: 'https://github.com/javaci001/EGITIM-SART.git'
             }
         }
 
-        stage('Test Word Count') {
+        stage('dosyayi gonder') {
             steps {
-                sh 'docker cp spark-ornek1.py spark-master:/spark/bin/spark-ornek2.py'
+                sh 'docker cp /var/lib/jenkins/workspace/pipeline1/spark-ornek1.py spark-master:/spark/bin/spark-ornek2.py'
             }
         }
 

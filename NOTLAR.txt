@@ -237,7 +237,4 @@ github ekranı --> repository --> settgins --> webhooks --> payload url -->
 payload url --> https://f1de-88-226-104-4.ngrok-free.app/github-webhook/
 önemli: sonuna /github-webhook/  eklemeyi unutma
 
-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
-dene
-dene 2
-dene 3sss
+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
