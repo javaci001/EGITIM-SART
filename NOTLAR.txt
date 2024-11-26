@@ -238,6 +238,6 @@ payload url --> https://f1de-88-226-104-4.ngrok-free.app/github-webhook/
 önemli: sonuna /github-webhook/  eklemeyi unutma
 
 d
-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
+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
 
 dene sened
