@@ -17,8 +17,5 @@ pipeline {
                 sh 'hostname -f'
             }
         }   
-
-
-
     }
 }
