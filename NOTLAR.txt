@@ -190,6 +190,32 @@ python3 -m pip install pyspark
 
 
 ********************************************************************************************************
+JENKINS UBUNTU YUKLEME
+********************************************************************************************************
+Önemli not:
+    jenkins i ubuntu local e yükle. 
+    docker olarak da ben ekledim 
+    ama bu sefer dosya vs. kopyalamada iki container arasında sorun oluyor. 
+    en iyisi ubuntu local e direkt yüklemek ve kullanmak 
+
+sudo wget -O /usr/share/keyrings/jenkins-keyring.asc \
+  https://pkg.jenkins.io/debian/jenkins.io-2023.key
+echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc]" \
+  https://pkg.jenkins.io/debian binary/ | sudo tee \
+  /etc/apt/sources.list.d/jenkins.list > /dev/null
+sudo apt-get update
+sudo apt-get install jenkins
+
+systemctl cat jenkins   --> jenkins configurasyonu görebilirsin
+mesela Environment="JENKINS_PORT=8080"  görebilirsin. 
+systemctl edit jenkins  --> bununla da configürasyonu değiştirebilirsin
+
+
+http://localhost:8080/  --> jenkins giriş ekranı 
+
+sudo cat /var/lib/jenkins/secrets/initialAdminPassword  --> token bilgisini al
+
+********************************************************************************************************
 NGROK YUKLEME ve SIGN IN OLMA
 ********************************************************************************************************
 https://dashboard.ngrok.com/login
@@ -207,4 +233,4 @@ github ekranı --> repository --> settgins --> webhooks --> payload url -->
 payload url --> https://f1de-88-226-104-4.ngrok-free.app/github-webhook/
 önemli: sonuna /github-webhook/  eklemeyi unutma
 
-denesene
+den

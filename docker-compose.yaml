@@ -219,11 +219,12 @@ services:
     image: bde2020/spark-master:3.3.0-hadoop3.3
     container_name: spark-master
     hostname: spark-master
+    user: root
     depends_on:
       - namenode
       - datanode1
     ports:
-      - "8080:8080"
+      - "8081:8080"
       - "7077:7077"
       - "4040:4040"
     environment:
@@ -255,24 +256,24 @@ services:
         hard: 65536 
 
 
-  jenkins:
-    image: jenkins/jenkins:lts
-    container_name: jenkins
-    hostname: jenkins
-    restart: always
-    privileged: true
-    user: root
-    ports:
-      - 8081:8080
-      - 50000:50000
-    container_name: jenkins
-    volumes:
-      - jenkins_configuration:/var/jenkins_home
-      - /var/run/docker.sock:/var/run/docker.sock
-    ulimits:
-      nofile:
-        soft: 65536
-        hard: 65536 
+#  jenkins:
+#    image: jenkins/jenkins:lts
+#    container_name: jenkins
+#    hostname: jenkins
+#    restart: always
+#    privileged: true
+#    user: root
+#    ports:
+#      - 8082:8080
+#      - 50000:50000
+#    container_name: jenkins
+#    volumes:
+#      - jenkins_configuration:/var/jenkins_home
+#      - /var/run/docker.sock:/var/run/docker.sock
+#    ulimits:
+#      nofile:
+#        soft: 65536
+#        hard: 65536 
 
 
 volumes:
