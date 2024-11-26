@@ -210,7 +210,9 @@ sudo apt-get install jenkins
 
 systemctl cat jenkins   --> jenkins configurasyonu görebilirsin
 mesela Environment="JENKINS_PORT=8080"  görebilirsin. 
-systemctl edit jenkins  --> bununla da configürasyonu değiştirebilirsin
+sudo vi /etc/default/jenkins --> bununla da configürasyonu değiştirebilirsin
+sudo vi /lib/systemd/system/jenkins.service
+
 
 
 http://localhost:8080/  --> jenkins giriş ekranı 
@@ -236,6 +238,6 @@ payload url --> https://f1de-88-226-104-4.ngrok-free.app/github-webhook/
 önemli: sonuna /github-webhook/  eklemeyi unutma
 
 d
-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
+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
 
-dene 
+dene sene
