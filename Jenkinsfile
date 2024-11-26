@@ -17,5 +17,19 @@ pipeline {
                 sh 'hostname -f'
             }
         }   
+
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/javaci001/EGITIM-SART.git'
+            }
+        }
+
+        stage('Test Word Count') {
+            steps {
+                sh 'docker cp spark-ornek1.py spark-master:/spark/bin/spark-ornek2.py'
+            }
+        }
+
+
     }
 }

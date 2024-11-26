@@ -224,9 +224,9 @@ services:
       - namenode
       - datanode1
     ports:
-      - "8081:8080"
+      - "8085:8080"
       - "7077:7077"
-      - "4040:4040"
+      - "4048:4040"
     environment:
       - INIT_DAEMON_STEP=setup_spark
       - CORE_CONF_fs_defaultFS=hdfs://namenode:9870      
@@ -243,7 +243,7 @@ services:
     depends_on:
       - spark-master
     ports:
-      - "8082:8081"
+      - "8089:8081"
     environment:
       - "SPARK_MASTER=spark://spark-master:7077"
       - CORE_CONF_fs_defaultFS=hdfs://namenode:9870
