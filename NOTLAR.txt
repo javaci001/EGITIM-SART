@@ -59,6 +59,8 @@ windows' a git yüklemek için:
         ayarlar --> developer settings --> personel access tokens --> token(classic)
         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
 
+        denesene
+
     GIT ILK CONFIG ISLEMLERI 
         git --version
         git config --global user.name "javaci001"
