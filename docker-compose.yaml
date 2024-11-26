@@ -213,16 +213,24 @@ services:
         hard: 65536 
 
 
-
+#/spark/bin/pyspark --master spark://spark-master:7077
+#/spark/bin/spark-shell --master spark://spark-master:7077
   spark-master:
     image: bde2020/spark-master:3.3.0-hadoop3.3
     container_name: spark-master
     hostname: spark-master
+    depends_on:
+      - namenode
+      - datanode1
     ports:
-      - "8082:8082"
+      - "8080:8080"
       - "7077:7077"
+      - "4040:4040"
     environment:
       - INIT_DAEMON_STEP=setup_spark
+      - CORE_CONF_fs_defaultFS=hdfs://namenode:9870      
+    env_file:
+      - ./hadoop.env      
     ulimits:
       nofile:
         soft: 65536
@@ -234,9 +242,13 @@ services:
     depends_on:
       - spark-master
     ports:
-      - "8084:8084"
+      - "8081:8081"
     environment:
       - "SPARK_MASTER=spark://spark-master:7077"
+      - CORE_CONF_fs_defaultFS=hdfs://namenode:9870
+      - SPARK_WORKER_MEMORY=4g
+    env_file:
+      - ./hadoop.env      
     ulimits:
       nofile:
         soft: 65536

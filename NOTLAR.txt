@@ -170,5 +170,22 @@ sudo su
 base=https://github.com/docker/machine/releases/download/v0.16.0 && curl -L $base/docker-machine-$(uname -s)-$(uname -m) >/usr/local/bin/docker-machine && chmod +x /usr/local/bin/docker-machine
 docker-machine version
 
-bugün 21 kasım
+
+********************************************************************************************************
+VISUAL STUDIO CODE PYTHON 
+********************************************************************************************************
+visual studio code extension olarak python yüklenir.
+"Python extension for Visual Studio Code"
+
+terminalden aşağıdakiler yüklenir.
+sudo apt update
+sudo apt-get -y install python3-pip     --> pip yüklenir
+pip3 --version
+python3 -m pip --version
+
+sudo apt install python3.12-venv  --> virtual environment yüklemek için
+python3 -m venv venv  --> bir tane virtual env create ettik. Yani sanal bir python ortamı oluşturyoruz.
+source ./venv/bin/activate
+python3 -m pip install pyspark
+
 
