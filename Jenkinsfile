@@ -26,7 +26,7 @@ pipeline {
 
         stage('dosyayi gonder') {
             steps {
-                sh 'docker cp /var/lib/jenkins/workspace/pipeline1/spark_ornek1.py spark-master:/spark/bin/spark_ornek2.py'
+                sh 'sudo docker cp /var/lib/jenkins/workspace/pipeline1/spark_ornek1.py spark-master:/spark/bin/spark_ornek2.py'
             }
         }
 
