@@ -219,6 +219,9 @@ http://localhost:8080/  --> jenkins giriş ekranı
 
 sudo cat /var/lib/jenkins/secrets/initialAdminPassword  --> token bilgisini al
 
+
+sudo usermod -aG docker jenkins --> docker işlemleri için
+
 ********************************************************************************************************
 NGROK YUKLEME ve SIGN IN OLMA
 ********************************************************************************************************
@@ -242,3 +245,5 @@ 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
 https://github.com/javaci001/EGITIM-SART.git
 
 git remote set-url origin https://javaci001:j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@github.com/javaci001/EGITIM-SART.git
+
+git config --global remote.origin.url "https://github.com/javaci001/EGITIM-SART.git"
