@@ -200,6 +200,20 @@ JENKINS UBUNTU YUKLEME
     ama bu sefer dosya vs. kopyalamada iki container arasında sorun oluyor. 
     en iyisi ubuntu local e direkt yüklemek ve kullanmak 
 
+Önemli not:
+    jenkins in docker komutlarını çalıştırması için aşağıdaki 2 komutu çalıştırmalısın. 
+    jenkins yüklendikten sonra tabi. 
+      sudo chmod 666 /var/run/docker.sock
+      sudo usermod -aG docker jenkins
+      cat /etc/passwd | grep jenkins
+      cut -d: -f1 /etc/passwd
+      cat /etc/group | grep docker
+
+Önemli not:
+    jenkins default 8080 e yüklenmektedir. 
+    ancak github webhook ta 8080 de sorunlar oluyor. 
+    bu nedenle 8081 yap. aşağıda anlattım. 
+
 sudo wget -O /usr/share/keyrings/jenkins-keyring.asc \
   https://pkg.jenkins.io/debian/jenkins.io-2023.key
 echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc]" \
@@ -212,7 +226,6 @@ systemctl cat jenkins   --> jenkins configurasyonu görebilirsin
 mesela Environment="JENKINS_PORT=8080"  görebilirsin. 
 sudo vi /etc/default/jenkins --> bununla da configürasyonu değiştirebilirsin
 sudo vi /lib/systemd/system/jenkins.service
-
 
 
 http://localhost:8080/  --> jenkins giriş ekranı 
@@ -240,25 +253,31 @@ github ekranı --> repository --> settgins --> webhooks --> payload url -->
 payload url --> https://f1de-88-226-104-4.ngrok-free.app/github-webhook/
 önemli: sonuna /github-webhook/  eklemeyi unutma
 
-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
 
-https://github.com/javaci001/EGITIM-SART.git
+aşağıdaki bilgiler token sürekli kabul etmediğinden bulduğum şeyler. ama bir işe yaramıyor. 
+    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
 
-git remote set-url origin https://javaci001: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@github.com/javaci001/EGITIM-SART.git
-git remote set-url origin git@github.com:javaci001/EGITIM-SART.git
+    https://github.com/javaci001/EGITIM-SART.git
 
+    git remote set-url origin https://javaci001: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@github.com/javaci001/EGITIM-SART.git
+    git remote set-url origin git@github.com:javaci001/EGITIM-SART.git
 
-git config --list
-git config --global remote.origin.url "https://github.com/javaci001/EGITIM-SART.git"
+    git config --list
+    git config --global remote.origin.url "https://github.com/javaci001/EGITIM-SART.git"
 
-
-
-git config --global --unset credential.helper
-sudo git config --system --unset credential.helper
-git config credential.helper store
-
+    git config --global --unset credential.helper
+    sudo git config --system --unset credential.helper
+    git config credential.helper store
 
 
+********************************************************************************************************
+SSH KEYGEN 
+********************************************************************************************************
 ssh-keygen -t rsa -b 4096 -C "mmetin@mmetin.com"
 cat ~/.ssh/id_rsa.pub
+
+
+
+
+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
 
