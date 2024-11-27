@@ -2,7 +2,7 @@
 
 """
 docker container cp spark_ornek1.py spark-master:/spark/bin
-spark-submit spark_ornek1.py spark://spark-master:7077 hdfs://namenode:9820/deneme/istiklalmarsi.txt
+./spark-submit spark_ornek1.py spark://spark-master:7077 hdfs://namenode:9820/deneme/istiklalmarsi.txt
 """
 
 from pyspark.sql import SparkSession
@@ -14,6 +14,7 @@ import sys
 if __name__ == "__main__":
     if(len(sys.argv)) != 3:
         print("lütfen argumanları giriniz. namenode ve spark olanı")
+        print("su sekilde :   ./spark-submit spark_ornek1.py spark://spark-master:7077 hdfs://namenode:9820/deneme/istiklalmarsi.txt ")
         sys.exit(1)
 
     sparkmaster = sys.argv[1]
@@ -28,4 +29,4 @@ if __name__ == "__main__":
     data1 = sc.textFile(namenodemaster)
     print(data1.count())
 
-    print("merhaba dünya")
+    print("merhaba dünyammm")
