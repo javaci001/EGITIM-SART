@@ -255,6 +255,64 @@ services:
         soft: 65536
         hard: 65536 
 
+  mysql:
+    image: mysql
+    container_name: mysql
+    hostname: mysql
+    ports: 
+      - "3306:3306"
+      - "33060:33060"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: mmetin
+      MYSQL_DATABASE: mmetin
+      MYSQL_USER: mmetin
+      MYSQL_PASSWORD: mmetin
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536       
+
+#user: admin, pass: admin
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    hostname: grafana
+    ports:
+      - 3000:3000
+    user: "104"
+    links: 
+      - mysql
+    volumes:
+      - grafana-data:/var/lib/grafana      
+    depends_on:
+      - mysql
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536     
+
+  zeppelin:
+    image: bde2020/zeppelin
+    container_name: zeppelin
+    hostname: zeppelin
+    env_file:
+      - ./hadoop.env
+    ports:
+      - 8011:8080
+    volumes:
+      - zeppelin-data:/opt/zeppelin/notebook
+    environment:
+      CORE_CONF_fs_defaultFS: "hdfs://namenode:89870"
+    depends_on:
+      - "namenode"
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536         
+          
 
 #  jenkins:
 #    image: jenkins/jenkins:lts
@@ -276,6 +334,257 @@ services:
 #        hard: 65536 
 
 
+
+
+#CSP ile ilgili olanlar: 13GB kadar. yuklemesi 45-60dk. surebilir. 
+#SBB kullanırken artırmakta fayda var.  docker-compose up -d --scale flink-taskmanager=2
+#schema registry : http://localhost:7788
+#stream messaging manager : http://localhost:9991
+#streaming sql builder : http://localhost:18121   Username: admin Password: admin
+
+  ssb-sse-csp:
+    image: docker.repository.cloudera.com/cloudera/csp-ce/ssb-sse:2.0.0.0
+    container_name: ssb-sse-csp
+    hostname: ssb-sse-csp
+    ports:
+      - "18121:18121"
+    volumes:
+      - ssb-volume-csp:/persistent
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "ssb-sse-csp:18121/api/v1/heartbeat" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    restart: on-failure
+    depends_on:
+      postgresql-csp:
+        condition: service_started
+      kafka-csp:
+        condition: service_healthy
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536         
+
+  ssb-mve-csp:
+    image: docker.repository.cloudera.com/cloudera/csp-ce/ssb-mve:2.0.0.0
+    hostname: ssb-mve-csp
+    container_name: ssb-mve-csp
+    ports:
+      - "18131:18131"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "ssb-mve-csp:18131/heartbeat" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    restart: on-failure
+    depends_on:
+      ssb-sse-csp:
+        condition: service_started
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536         
+
+  postgresql-csp:
+    image: docker.repository.cloudera.com/cloudera/csp-ce/postgresql:2.0.0.0
+    hostname: postgresql-csp
+    container_name: postgresql-csp
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg-volume-csp:/var/lib/postgresql
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-d", "db_prod" ]
+      interval: 30s
+      timeout: 60s
+      retries: 5
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536       
+
+  zookeeper-csp:
+    image: docker.repository.cloudera.com/cloudera/csp-ce/zookeeper:2.0.0.0
+    hostname: zookeeper-csp
+    container_name: zookeeper-csp
+    ports:
+      - "2181:2181"
+    volumes:
+      - zk-volume-csp:/data
+    healthcheck:
+      test: bash -c '/usr/bin/test $$({ printf >&3 "ruok" && /usr/bin/cat <&3; } 3<>/dev/tcp/localhost/2181) == "imok"'
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    restart: on-failure
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536     
+
+  kafka-csp:
+    image: docker.repository.cloudera.com/cloudera/csp-ce/kafka:2.0.0.0
+    hostname: kafka-csp
+    container_name: kafka-csp
+    ports:
+      - "9092:9092"
+      - "9094:9094"
+      - "24042:24042"
+      - "9100:9100"
+    volumes:
+      - kf-volume-csp:/data
+    healthcheck:
+      test: [ "CMD", "kafka-topics.sh", "--list", "--bootstrap-server", "localhost:9092" ]
+      interval: 5s
+      timeout: 10s
+      retries: 30
+    restart: on-failure
+    depends_on:
+      zookeeper-csp:
+        condition: service_healthy
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper-csp:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-csp:9092,CONNECTIONS_FROM_HOST://localhost:19092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,CONNECTIONS_FROM_HOST:PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1     
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536          
+
+  kafka-connect-csp:
+    image: docker.repository.cloudera.com/cloudera/csp-ce/kafka-connect:2.0.0.0
+    hostname: kafka-connnect-csp
+    container_name: kafka-connnect-csp
+    ports:
+      - "28083:28083"
+      - "28086:28086"
+    volumes:
+      - kfc-volume-csp:/data
+    restart: on-failure
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "kafka-connect-csp:28083/connectors" ]
+      interval: 5s
+      timeout: 10s
+      retries: 30
+    depends_on:
+      kafka-csp:
+        condition: service_healthy
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536         
+
+  prometheus-csp:
+    image: docker.repository.cloudera.com/cloudera/csp-ce/prometheus:2.0.0.0
+    hostname: prometheus-csp
+    container_name: prometheus-csp
+    ports:
+      - "9090:9090"
+    volumes:
+      - prom-volume-csp:/persistent
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "prometheus-csp:9090/api/v1/targets?state=active" ]
+      interval: 5s
+      timeout: 10s
+      retries: 30
+    restart: on-failure
+    depends_on:
+      kafka-connect-csp:
+        condition: service_healthy
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536         
+
+  schema-registry-csp:
+    image: docker.repository.cloudera.com/cloudera/csp-ce/schema-registry:2.0.0.0
+    hostname: schema-registry-csp
+    container_name: schema-registry-csp
+    ports:
+      - "7788:7788"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "schema-registry-csp:7788/api/v1/schemaregistry/schemas" ]
+      interval: 5s
+      timeout: 10s
+      retries: 50
+    restart: on-failure
+    volumes:
+      - sr-volume-csp:/tmp/registry/local-jars
+    depends_on:
+      postgresql-csp:
+        condition: service_started
+      kafka-connect-csp:
+        condition: service_healthy
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536 
+
+  smm-csp:
+    image: docker.repository.cloudera.com/cloudera/csp-ce/smm:2.0.0.0
+    hostname: smm-csp
+    container_name: smm-csp
+    ports:
+      - "8585:8585"
+      - "9991:9991"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "smm-csp:8585/api/v2/admin/metrics/aggregated/topics?duration=LAST_THIRTY_MINUTES&state=all" ]
+      interval: 5s
+      timeout: 10s
+      retries: 30
+    restart: on-failure
+    depends_on:
+      postgresql-csp:
+        condition: service_started
+      prometheus-csp:
+        condition: service_healthy
+      schema-registry-csp:
+        condition: service_healthy
+      kafka-connect-csp:
+        condition: service_healthy
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536         
+
+  flink-jobmanager-csp:
+    image: docker.repository.cloudera.com/cloudera/csp-ce/flink:2.0.0.0
+    hostname: flink-jobmanager-csp
+    container_name: flink-jobmanager-csp
+    ports:
+      - "8881:8081"
+    entrypoint: /usr/bin/init-flink jobmanager
+    volumes:
+      - flink-volume-csp:/persistent
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "localhost:8081" ]
+      interval: 5s
+      timeout: 10s
+      retries: 30
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536       
+
+  flink-taskmanager-csp:
+    image: docker.repository.cloudera.com/cloudera/csp-ce/flink:2.0.0.0
+    hostname: flink-taskmanager-csp
+    container_name: flink-taskmanager-csp
+    entrypoint: /usr/bin/init-flink taskmanager
+    volumes:
+      - flink-volume-csp:/persistent
+    depends_on:
+      flink-jobmanager-csp:
+        condition: service_healthy
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536         
+
+
 volumes:
   datanode1:
   datanode2:
@@ -284,4 +593,14 @@ volumes:
   hadoop_historyserver:
   hive-metastore-postgresql:
   jenkins_configuration:
-
+  ssb-volume-csp:
+  flink-volume-csp:
+  pg-volume-csp:
+  zk-volume-csp:
+  kf-volume-csp:
+  kfc-volume-csp:
+  prom-volume-csp:
+  sr-volume-csp:
+  mysql-data:
+  grafana-data:
+  zeppelin-data:
