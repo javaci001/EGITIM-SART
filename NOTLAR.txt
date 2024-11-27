@@ -261,6 +261,7 @@ aşağıdaki bilgiler token sürekli kabul etmediğinden bulduğum şeyler. ama 
 
     git remote set-url origin https://javaci001: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@github.com/javaci001/EGITIM-SART.git
     git remote set-url origin git@github.com:javaci001/EGITIM-SART.git
+    git remote set-url origin ssh://git@github.com/javaci001/EGITIM-SART.git
 
     git config --list
     git config --global remote.origin.url "https://github.com/javaci001/EGITIM-SART.git"
@@ -279,5 +280,6 @@ cat ~/.ssh/id_rsa.pub
 
 
 
-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
+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
+
 
